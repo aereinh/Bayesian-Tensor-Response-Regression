@@ -3,7 +3,7 @@ Functions to implement longitudinal or cross-sectional Bayesian Tensor Response 
 
 This repository contains R scripts for implementing the Gibbs sampling algorithm used to estimate model parameter posteriors in BTRR. In BTRR, each model parameter pertains to effects of scalar covariates on a tensor outcome of arbitrary dimension (most often 2 or 3), using low-rank tensor decomposition to account for spatial structure across tensor elements (e.g. effects on different voxels in a brain scan). The general regression model for the longitudinal case is as follows:
 
-![equation](https://latex.codecogs.com/svg.image?\mathcal{Y}_{ti}=\mathcal{M}&plus;B_i&plus;(\Gamma&plus;\Theta_i)\times&space;\mathcal{T}_{ti}&plus;\sum_{m=1}^M&space;\mathcal{B}_{tm}&space;c_{i,m}&space;&plus;&space;\sum_{s=1}^S&space;\mathcal{D}_s&space;x_{i,s}&plus;\sum_{k=1}^K&space;\Gamma_k&space;z_{ti,k}&plus;\epsilon_{ti})
+![equation](https://latex.codecogs.com/svg.image?\mathcal{Y}_{ti}=\mathcal{M}&plus;B_i&plus;(\Gamma&plus;\Theta_i)\times&space;\mathcal{T}_{ti}&plus;\sum_{m=1}^M&space;\mathcal{B}_{tm}&space;c_{i,m}&plus;\sum_{s=1}^S&space;\mathcal{D}_s&space;x_{i,s}&plus;\sum_{k=1}^K&space;\Gamma_k&space;z_{ti,k}&plus;\epsilon_{ti},&space;\&space;\epsilon_{ti}&space;\sim&space;N(0,\sigma_{ti}^2))
 
 Priors and derived conditional posteriors for each model parameter can be found in the paper "Bayesian Longitudinal Tensor Response Regression for Modeling
 Neuroplasticity" (Kundu, Reinhardt, et al., 2022).
