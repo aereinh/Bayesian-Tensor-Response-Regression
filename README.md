@@ -1,5 +1,5 @@
 # BTRR
-Functions to implement Bayesian Tensor Response Regression Model (BTRR) in R.
+Functions to implement longitudinal or cross-sectional Bayesian Tensor Response Regression Model (BTRR) in R.
 
 This repository contains R scripts for implementing the Gibbs sampling algorithm used to estimate model parameter posteriors in BTRR. In BTRR, each model parameter pertains to effects of scalar covariates on a tensor outcome of arbitrary dimension (most often 2 or 3), using low-rank tensor decomposition to account for spatial structure across tensor elements (e.g. effects on different voxels in a brain scan). The overall regression model, along with the priors and derived conditional posteriors for each model parameter, are found in Posterior_derivations.pdf.
 
