@@ -7,11 +7,9 @@ This repository contains R scripts for implementing the Gibbs sampling algorithm
 
 ![equation](https://latex.codecogs.com/svg.image?\epsilon_{ti}\sim&space;\mathcal{N}(0,\sigma_{ti}^2))
 
-
-
 Priors and derived conditional posteriors for each model parameter can be found in the paper "Bayesian Longitudinal Tensor Response Regression for Modeling
 Neuroplasticity" (Kundu, Reinhardt, et al., 2022).
 
-The file main_functions.R contain the R function used to implement the Gibbs sampling algorithm for l-BTRR and cs-BTRR. The function btrr.long_rcpp() repeatedly calls on btrr.1var.1visit.1iter_rcpp() across each covariate and each Gibbs sampling iteration. The resultant sampled tensor coefficients are returned, and post-burn-in samples are used to find the point estimate (mean) and 95% credible interval for each coefficient element. Functions vox.ols.reg() and vox.ols.reg.ri() are used to find the Ordinary Least Squares (OLS) estimates across each tensor element separately. Due to the inherent structure of many biological systems, BTRR may be preferable over OLS in terms of model generalizability and interpretability, for example in neuroimaging and genomics applications.
+The file main_functions.R contain the R function used to implement the Gibbs sampling algorithm for l-BTRR and cs-BTRR. The function btrr.long_rcpp() repeatedly calls on btrr.1var.1visit.1iter_rcpp() across each covariate and each Gibbs sampling iteration. The resultant sampled tensor margins (used to reconstruct the tensor coefficients) are returned, and post-burn-in samples are used to find the point estimate (mean) and credible interval for each coefficient element using the getBTRRCoef() function.
 
-The file BTRR_demo_markdown.Rmd is a Rmarkdown file (knitted to pdf BTRR_demo_markdown.pdf) containing a brief demonstration for how to use the BTRR.R functions on simulated, longitudinal data. In this example, low-rank tensor decomposition is used to generate the true model coefficients, and resultant coefficients indicate that BTRR outperforms OLS when the low-rank generation is used. Figures showing model performance and comparison to tradiational methods (OLS) are presented here as well.
+The file sample_runner.Rmd is a Rmarkdown file containing a brief demonstration for how to use the BTRR functions on simulated longitudinal data. In this example, low-rank tensor decomposition is used to generate the true model coefficients, and outcomes are generated from the Model using the simulate_Y() function. Figures showing the accuracy of significance estimates are presented.
