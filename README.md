@@ -15,6 +15,7 @@ The file main_functions.R contain the R function used to implement the Gibbs sam
 The file sample_runner.R is a R script containing a brief demonstration for how to use the BTRR functions on simulated longitudinal and cross-sectional data. In this example, low-rank tensor decomposition is used to generate the true model coefficients, and outcomes are generated from the Model using the simulate_Y() function. Figures showing the accuracy of significance estimates are presented.
 
 **Usage (w/ list of inputs)**:
+
 -Run MCMC using *btrr.long_rcpp(...)*, e.g. btrr_results <- btrr.long_rcpp(Y,...)
   - Y ~ Tensor-valued outcome of dimension N x p1 x p2 x p3 (3D tensor) or N x p1 x p2 (2D tensor), where N is number of observations and p=(p1,p2,p3) or (p1,p2) is the tensor (image) size. No Default.
   - ID, Time, Visit: Vectors of length N with the subject index (ID), the timepoints (Time), and the time/visit index (Visit). ID should range from 1 to number of unique subjects (N_subj), the order of values in Time and Visit for a given subject should be the same, and the minimum Visit value should be 0. Default NULL for each
