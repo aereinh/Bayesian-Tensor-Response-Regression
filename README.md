@@ -14,6 +14,18 @@ The file main_functions.R contain the R function used to implement the Gibbs sam
 
 The file sample_runner.R is a R script containing a brief demonstration for how to use the BTRR functions on simulated longitudinal and cross-sectional data. In this example, low-rank tensor decomposition is used to generate the true model coefficients, and outcomes are generated from the Model using the simulate_Y() function. Figures showing the accuracy of significance estimates are presented.
 
-** Key Functions **:
-- blah
-- blah 2
+**Key Functions**:
+- btrr.long_rcpp(...)
+  - INPUTS:
+  - Y
+  - ID, Time, Visit: Default NULL
+  - Ci, Xi, Zti: Default NULL)
+  - R: Default 2
+  - niter: Default 1000
+  - null_M, null_Bi, null_Gamma, null_Thetai, null_Btm, null_Ds, null_Gammak, null_baseline: Default F
+  - a.sig, b.sig, a.tau, b.tau, a.lam, b.lam, a.alpha, b.alpha: Default 1
+  - sigma_log_alpha: Default 0.01
+  - alpha.init: Default 10
+  - show.prog: Default TRUE
+  - prog.count: Default 10
+  - show.allsteps: Default FALSE
