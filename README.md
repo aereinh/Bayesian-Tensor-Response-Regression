@@ -13,3 +13,7 @@ Neuroplasticity" (Kundu, Reinhardt, et al., 2022).
 The file main_functions.R contain the R function used to implement the Gibbs sampling algorithm for l-BTRR and cs-BTRR. The function btrr.long_rcpp() repeatedly calls on btrr.1var.1visit.1iter_rcpp() across each covariate and each Gibbs sampling iteration. The resultant sampled tensor margins (used to reconstruct the tensor coefficients) are returned, and post-burn-in samples are used to find the point estimate (mean) and credible interval for each coefficient element using the getBTRRCoef() function.
 
 The file sample_runner.R is a R script containing a brief demonstration for how to use the BTRR functions on simulated longitudinal and cross-sectional data. In this example, low-rank tensor decomposition is used to generate the true model coefficients, and outcomes are generated from the Model using the simulate_Y() function. Figures showing the accuracy of significance estimates are presented.
+
+** Key Functions **:
+- blah
+- blah 2
