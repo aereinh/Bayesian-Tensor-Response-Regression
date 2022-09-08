@@ -15,17 +15,16 @@ The file main_functions.R contain the R function used to implement the Gibbs sam
 The file sample_runner.R is a R script containing a brief demonstration for how to use the BTRR functions on simulated longitudinal and cross-sectional data. In this example, low-rank tensor decomposition is used to generate the true model coefficients, and outcomes are generated from the Model using the simulate_Y() function. Figures showing the accuracy of significance estimates are presented.
 
 **Key Functions**:
-- btrr.long_rcpp(...)
-  - INPUTS:
-  - Y
-  - ID, Time, Visit: Default NULL
-  - Ci, Xi, Zti: Default NULL)
-  - R: Default 2
-  - niter: Default 1000
-  - null_M, null_Bi, null_Gamma, null_Thetai, null_Btm, null_Ds, null_Gammak, null_baseline: Default F
-  - a.sig, b.sig, a.tau, b.tau, a.lam, b.lam, a.alpha, b.alpha: Default 1
-  - sigma_log_alpha: Default 0.01
-  - alpha.init: Default 10
-  - show.prog: Default TRUE
-  - prog.count: Default 10
-  - show.allsteps: Default FALSE
+- btrr.long_rcpp(...) INPUTS:
+  - Y ~ Tensor-valued outcome of dimension N x p1 x p2 x p3 (3D tensor) or N x p1 x p2 (2D tensor), where N is number of observations and p=(p1,p2,p3) or (p1,p2) is the tensor (image) size. No Default.
+  - ID, Time, Visit: Vectors of length N with the subject index (ID), the timepoints (Time), and the time/visit index (Visit). ID should range from 1 to number of unique subjects (N_subj), the order of values in Time and Visit for a given subject should be the same, and the minimum Visit value should be 0. Default NULL for each
+  - Ci, Xi, Zti: Matrices of size N_subj x M, N_subj x S, and N x K containing covariate information corresponding to $\mathcal{B}_{tm}$, $\mathcal{D}_s$, and $\Gamma_k$, respectively. Default of NULL for each
+  - R: Rank of tensor decomposition used for sampling model coefficients. Default 2
+  - niter: Number of MCMC samples. Default 1000
+  - null_M, null_Bi, null_Gamma, null_Thetai, null_Btm, null_Ds, null_Gammak, null_baseline: Specify whether to exclude corresponding term from model fitting. Default of FALSE for each
+  - a.sig, b.sig, a.tau, b.tau, a.lam, b.lam, a.alpha, b.alpha: Hyperparameters used to define priors. Default of 1 for each
+  - sigma_log_alpha: Parameter used to define proposal density variance for updating the correlation parameter $\alpha_{dr}$. Default 0.01
+  - alpha.init: Initial value of $\alpha_{dr}$. Default 10
+  - show.prog: Whether or not to show periodic progress updates. Default TRUE
+  - prog.count: Number of samples until progress update is displayed. Default 10
+  - show.allsteps: Whether or not to display updates when each model parameter is being sampled. Default FALSE
