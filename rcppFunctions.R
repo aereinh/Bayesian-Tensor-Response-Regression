@@ -625,7 +625,7 @@ for (int r=0; r<R; ++r) {
       }
     }
     
-    W_cdr(d,r) = sum_marg/tau_prev;
+    W_cdr(d,r) = sum_marg/(tau_prev*(1-exp(-2*alpha_prev(d,r))));
   }
 }
 return W_cdr;
@@ -661,7 +661,7 @@ for (int r=0; r<R; ++r) {
       }
     }
     
-    W_cdr(d,r) = sum_marg/tau_prev;
+    W_cdr(d,r) = sum_marg/(tau_prev*(1-exp(-2*alpha_prev(d,r))));
   }
 }
 return W_cdr;

@@ -563,6 +563,12 @@ btrr.long_rcpp <- function(Y,ID=NULL,Time=NULL,Visit=NULL,Ci=NULL,Xi=NULL,Zti=NU
       sigma2.store[,iter+1] <- sampleSigma_fullModel(Yvec,ID,Time,Visit,Ci,Xi,Zti,M_iter,Bi_iter,
                                                      Gamma_iter,Thetai_iter,Btm_iter_cond,Ds_iter,Gammak_iter,M,a.sig,b.sig)
     }
-  return(list(beta.store, w.store, lambda.store, tau.store, sigma2.store, alpha.store))
+    names(beta.store) = names(w.store) = names(lambda.store) = names(tau.store) = names(alpha.store) = c("M", "Bi", "Gamma", "Thetai", "Btm", "Ds", "Gammak")
+    
+  return(list(beta=beta.store, w=w.store, lambda=lambda.store, tau=tau.store, sigma2=sigma2.store, alpha=alpha.store))
   
 }
+
+
+
+

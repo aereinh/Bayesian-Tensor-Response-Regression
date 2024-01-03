@@ -139,7 +139,7 @@ log_g_alpha_nvars_nvisits2 <- function(alpha, p, beta, w, tau, a.alpha=1, b.alph
 # Get coefficients/significance -------------------------------------------
 
 # Calculates joint credible intervals using nonparametric "MDEV" method 
-mdev_cred_int <- function(Gamma_k_mcmc,alpha=0.05,missing_vox=NULL) {
+mdev_cred_int <- function(Gamma_k_mcmc,alpha=0.05,missing_vox=NULL,return_int=F) {
   if (!is.null(missing_vox)) {
     Gamma_k_mcmc[,missing_vox] <- NA
   }
@@ -150,12 +150,18 @@ mdev_cred_int <- function(Gamma_k_mcmc,alpha=0.05,missing_vox=NULL) {
   shigh_alpha <- max(s_alpha_vox[2,]-mean_vox,na.rm=T)
   credint_vox <- rbind(mean_vox-slow_alpha,
                        mean_vox+shigh_alpha)
-  return(credint_vox[1,]*credint_vox[2,]>0)
+  int = credint_vox
+  signif = credint_vox[1,]*credint_vox[2,]>0
+  if (return_int==T) {
+    return(list(int=credint_vox, signif=signif))
+  } else {
+    return(signif)
+  }
 }
 
 # Returns coefficient estimate and/or significance estimates (from credible intervals), and/or MCMC samples of coefficients
 # from the MCMC samples of the tensor margins
-getBTRRCoef <- function(btrr_results, term=6, burn.in=0.3, find.signif=T, signif.type="joint", alpha=0.05, median=F, output_mcmc=F, missing_vox=NULL) {
+getBTRRCoef <- function(btrr_results, term=6, burn.in=0.3, find.signif=T, signif.type="joint", alpha=0.05, median=F, output_mcmc=F, missing_vox=NULL, return_int=F) {
   marg <- btrr_results[[1]][[term]]
   p <- unlist(lapply(marg, function(x) dim(x)[1]))
   R <- dim(marg[[1]])[2]
@@ -176,12 +182,16 @@ getBTRRCoef <- function(btrr_results, term=6, burn.in=0.3, find.signif=T, signif
       Coef_est <- apply(Coef_mcmc,c(1,3),mean)
     }
     Coef_signif <- NA*Coef_est
+    Coef_int <- array(NA,dim=c(2,dim(Coef_est)))
     if (find.signif) {
       if (signif.type=="pointwise") {
-        Coef_signif <- apply(Coef_mcmc,c(1,3),function(x) quantile(x,alpha/2)*quantile(x,1-alpha/2)>0)
+        Coef_int <- apply(Coef_mcmc,c(1,3),function(x) quantile(x, c(alpha/2,1-alpha/2)))
+        Coef_signif <- Coef_int[1,,]*Coef_int[2,,]>0
       } else if (signif.type=="joint") {
         for (k in 1:K) {
-          Coef_signif[k,] <- mdev_cred_int(Coef_mcmc[k,,],alpha,missing_vox)
+          results_mdev <- mdev_cred_int(Coef_mcmc[k,,],alpha,missing_vox,return_int=T)
+          Coef_int[,k,] <- results_mdev$int
+          Coef_signif[k,] <- results_mdev$signif
         } 
       }
     }
@@ -201,27 +211,40 @@ getBTRRCoef <- function(btrr_results, term=6, burn.in=0.3, find.signif=T, signif
       Coef_est <- apply(Coef_mcmc,c(1,2,4),mean)
     }
     Coef_signif <- NA*Coef_est
+    Coef_int <- array(NA,dim=c(2,dim(Coef_est)))
     if (find.signif) {
       if (signif.type=="pointwise") {
-        Coef_signif <- apply(Coef_mcmc,c(1,2,4),function(x) quantile(x,alpha/2)*quantile(x,1-alpha/2)>0)
+        Coef_int <- apply(Coef_mcmc,c(1,2,4),function(x) quantile(x,c(alpha/2,1-alpha/2)))
+        Coef_signif <- Coef_int[1,,,]*Coef_int[2,,,]>0
+        Coef_signif <- array(Coef_signif, dim=dim(Coef_est))
       } else if (signif.type=="joint") {
         for (t in 1:Nt) {
           for (m in 1:M) {
-            Coef_signif[t,m,] <- mdev_cred_int(Coef_mcmc[t,m,,],alpha,missing_vox)
+            results_mdev <- mdev_cred_int(Coef_mcmc[t,m,,],alpha,missing_vox,return_int=T)
+            Coef_int[,t,m,] <- results_mdev$int
+            Coef_signif[t,m,] <- results_mdev$signif
           }
         }
       }
     }
   }
   if (output_mcmc) {
-    if (find.signif) {
-      return(list(Coef_est, Coef_signif, Coef_mcmc))
+    if (find.signif && return_int) {
+      return(list(est=Coef_est, signif=Coef_signif, int=Coef_int, mcmc=Coef_mcmc))
+    } else if (find.signif && !return_int) {
+      return(list(est=Coef_est, signif=Coef_signif, mcmc=Coef_mcmc))
+    } else if (!find.signif && return_int) {
+      return(list(est=Coef_est, int=Coef_int, mcmc=Coef_mcmc))
     } else {
-      return(list(Coef_est, Coef_mcmc))
+      return(list(est=Coef_est, mcmc=Coef_mcmc))
     }
   } else {
-    if (find.signif) {
-      return(list(Coef_est, Coef_signif))
+    if (find.signif && return_int) {
+      return(list(est=Coef_est, signif=Coef_signif, int=Coef_int))
+    } else if (find.signif && !return_int) {
+      return(list(est=Coef_est, signif=Coef_signif))
+    } else if (!find.signif && return_int) {
+      return(list(est=Coef_est, int=Coef_int))
     } else {
       return(Coef_est)
     }
@@ -230,7 +253,7 @@ getBTRRCoef <- function(btrr_results, term=6, burn.in=0.3, find.signif=T, signif
 
 # Returns the deviance of all MCMC iterations, which can be used to calculate the deviance information criteria (DIC)
 # for goodness-of-fit
-getDeviance_alliter <- function(btrr_results, Y.train, ID, Time, Visit, Ci, Xi, Zti, show.prog=T, prog.count=10) {
+getDIC <- function(btrr_results, Y.train, ID, Time, Visit, Ci, Xi, Zti, burn.in=.3, show.prog=T, prog.count=10) {
   niter <- dim(btrr_results[[5]])[2]
   terms <- !unlist(lapply(btrr_results[[1]],function(x) any(is.na(unlist(x)))))
   p <- unlist(lapply(btrr_results[[1]][[which(terms==T)[1]]],function(x) dim(x)[1]))
@@ -266,14 +289,28 @@ getDeviance_alliter <- function(btrr_results, Y.train, ID, Time, Visit, Ci, Xi, 
   sigma2.store <- btrr_results[[5]]
   D_DIC <- rep(NA,niter)
   
-  M_iter <- rep(0,prod(p))
-  Bi_iter <- array(0,dim=c(Ni,prod(p)))
-  Gamma_iter <- rep(0,prod(p))
-  Thetai_iter <- array(0,dim=c(Ni,prod(p)))
-  Btm_iter <- array(0,dim=c(Nt,M,prod(p)))
-  Btm_iter_cond <- arrayC(Btm_iter,dim=c(Nt*M,prod(p)))
-  Ds_iter <- array(0,dim=c(S,prod(p)))
-  Gammak_iter <- array(0,dim=c(K,prod(p)))
+  M_est <- M_iter <- rep(0,prod(p))
+  Bi_est <- Bi_iter <- array(0,dim=c(Ni,prod(p)))
+  Gamma_est <- Gamma_iter <- rep(0,prod(p))
+  Thetai_est <- Thetai_iter <- array(0,dim=c(Ni,prod(p)))
+  Btm_est <- Btm_iter <- array(0,dim=c(Nt,M,prod(p)))
+  Btm_est_cond <- Btm_iter_cond <- arrayC(Btm_iter,dim=c(Nt*M,prod(p)))
+  Ds_est <- Ds_iter <- array(0,dim=c(S,prod(p)))
+  Gammak_est <- Gammak_iter <- array(0,dim=c(K,prod(p)))
+  
+  # get estimated values
+  if (terms[1]) M_est <- getBTRRCoef(btrr_results, term=1, burn.in=burn.in, find.signif=F)
+  if (terms[2]) Bi_est <- getBTRRCoef(btrr_results, term=2, burn.in=burn.in, find.signif=F)
+  if (terms[3]) Gamma_est <- getBTRRCoef(btrr_results, term=3, burn.in=burn.in, find.signif=F)
+  if (terms[4]) Thetai_est <- getBTRRCoef(btrr_results, term=4, burn.in=burn.in, find.signif=F)
+  if (terms[5]) { 
+    Btm_est <- getBTRRCoef(btrr_results, term=5, burn.in=burn.in, find.signif=F) 
+    Btm_est_cond <- arrayC(Btm_est, dim=c(Nt*M,prod(p)))
+  }
+  if (terms[6]) Ds_est <- getBTRRCoef(btrr_results, term=6, burn.in=burn.in, find.signif=F)
+  if (terms[7]) Gammak_est <- getBTRRCoef(btrr_results, term=7, burn.in=burn.in, find.signif=F)
+  sigma2_est = apply(btrr_results$sigma2[,round(burn.in*niter):niter],1,mean)
+  dev_est <- getDeviance_val(Yvec, ID, Time, Visit, Ci, Xi, Zti, M_est, Bi_est, Gamma_est, Thetai_est, Btm_est_cond, Ds_est, Gammak_est, sigma2_est, M)
   
   for (iter in 1:niter) {
     if (show.prog && iter %% prog.count==0) {print(iter)}
@@ -295,9 +332,14 @@ getDeviance_alliter <- function(btrr_results, Y.train, ID, Time, Visit, Ci, Xi, 
     D_DIC[iter] <- getDeviance_val(Yvec,ID,Time,Visit,Ci,Xi,Zti,M_iter,Bi_iter,Gamma_iter,Thetai_iter,Btm_iter_cond,
                                    Ds_iter,Gammak_iter,sigma2.store[,iter],M)
   }
-  return(D_DIC)
+  
+  # Get DIC
+  D_DIC_ss = D_DIC[round(burn.in*niter):niter]
+  DIC1 = 2*mean(D_DIC_ss)-dev_est
+  DIC2 = .5*var(D_DIC_ss)+mean(D_DIC_ss)
+  
+  return(list(DIC1=DIC1,DIC2=DIC2,devs=D_DIC))
 }
-
 
 # Simulate outcome given covariates and coefficients ----------------------
 

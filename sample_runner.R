@@ -144,10 +144,10 @@ plot(sigma2_mcmc[obs,round(burn.in*nMCMC):nMCMC],type="l",main="Burn-in Traceplo
 
 # Calculate Deviance Information Criterion
 Yvec_long <- array(Y_long,dim=c(N_obs,prod(p)))
-DIC_mcmc <- getDeviance_alliter(btrr_results_long,Y_long,ID,Time,Visit,Ci,Xi,Zti,prog.count=10)
-DIC_mcmc_burnin <- DIC_mcmc[round(burn.in*length(DIC_mcmc)):length(DIC_mcmc)]
-DIC_crit <- .5*var(DIC_mcmc_burnin)+mean(DIC_mcmc_burnin)
-DIC_crit
+DIC_long <- getDIC(btrr_results_long,Y_long,ID,Time,Visit,Ci,Xi,Zti,burn.in = burn.in,prog.count=10)
+DIC_long$DIC1
+DIC_long$DIC2
+
 
 
 
@@ -218,8 +218,6 @@ plot(sigma2_mcmc[obs,round(burn.in*nMCMC):nMCMC],type="l",main="Burn-in Traceplo
 
 # Calculate Deviance Information Criterion
 Yvec_cs <- array(Y_cs,dim=c(N_obs,prod(p)))
-DIC_mcmc <- getDeviance_alliter(btrr_results_cs,Y_cs,ID=NULL,Time=NULL,Visit=NULL,Ci=NULL,Xi=Xi_cs,Zti=NULL,prog.count=10)
-DIC_mcmc_burnin <- DIC_mcmc[round(burn.in*length(DIC_mcmc)):length(DIC_mcmc)]
-DIC_crit <- .5*var(DIC_mcmc_burnin)+mean(DIC_mcmc_burnin)
-DIC_crit
-
+DIC_cs <- getDIC(btrr_results_cs,Y_cs,ID=NULL,Time=NULL,Visit=NULL,Ci=NULL,Xi=Xi_cs,Zti=NULL,burn.in=burn.in,prog.count=10)
+DIC_cs$DIC1
+DIC_cs$DIC2
