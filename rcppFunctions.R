@@ -124,13 +124,13 @@ for (int r=0; r<R; ++r) {
     double sigma2_drj;
     if (j==0) {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*beta0_new(j+1,r))/(a_drj*tau_prev*w_prev(d,r)+1);
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1);
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1);
     } else if (j==(p0-1)) {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*beta0_new(j-1,r))/(a_drj*tau_prev*w_prev(d,r)+1);
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1);
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1);
     } else {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*(beta0_new(j-1,r)+beta0_new(j+1,r)))/(a_drj*tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
     }
 
   //sample from normal
@@ -221,13 +221,13 @@ for (int r=0; r<R; ++r) {
     double sigma2_drj;
     if (j==0) {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*beta1_new(j+1,r))/(a_drj*tau_prev*w_prev(d,r)+1);
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1);
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1);
     } else if (j==(p1-1)) {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*beta1_new(j-1,r))/(a_drj*tau_prev*w_prev(d,r)+1);
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1);
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1);
     } else {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*(beta1_new(j-1,r)+beta1_new(j+1,r)))/(a_drj*tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
     }
 
   //sample from normal
@@ -318,13 +318,13 @@ for (int r=0; r<R; ++r) {
     double sigma2_drj;
     if (j==0) {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*beta2_new(j+1,r))/(a_drj*tau_prev*w_prev(d,r)+1);
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1);
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1);
     } else if (j==(p2-1)) {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*beta2_new(j-1,r))/(a_drj*tau_prev*w_prev(d,r)+1);
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1);
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1);
     } else {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*(beta2_new(j-1,r)+beta2_new(j+1,r)))/(a_drj*tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
     }
 
   //sample from normal
@@ -407,13 +407,13 @@ for (int r=0; r<R; ++r) {
     double sigma2_drj;
     if (j==0) {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*beta0_new(j+1,r))/(a_drj*tau_prev*w_prev(d,r)+1);
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1);
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1);
     } else if (j==(p0-1)) {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*beta0_new(j-1,r))/(a_drj*tau_prev*w_prev(d,r)+1);
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1);
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1);
     } else {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*(beta0_new(j-1,r)+beta0_new(j+1,r)))/(a_drj*tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
     }
 
   //sample from normal
@@ -497,13 +497,13 @@ for (int r=0; r<R; ++r) {
     double sigma2_drj;
     if (j==0) {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*beta1_new(j+1,r))/(a_drj*tau_prev*w_prev(d,r)+1);
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1);
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1);
     } else if (j==(p1-1)) {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*beta1_new(j-1,r))/(a_drj*tau_prev*w_prev(d,r)+1);
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1);
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1);
     } else {
       mu_drj = (b_drj*tau_prev*w_prev(d,r) + exp(-alpha_prev(d,r))*(beta1_new(j-1,r)+beta1_new(j+1,r)))/(a_drj*tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
-      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj+tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
+      sigma2_drj = (tau_prev*w_prev(d,r))/(a_drj*tau_prev*w_prev(d,r)+1+exp(-2*alpha_prev(d,r)));
     }
 
   //sample from normal
